@@ -13,9 +13,18 @@ st.set_page_config(
 # -----------------------------
 # Load data
 # -----------------------------
+# -----------------------------
+# Load data
+# -----------------------------
 @st.cache_data
 def load_data():
-    df = pd.read_csv("../data/spotify_tracks.csv")
+    # Changed path from "../data/" to "data/" for Streamlit Cloud compatibility
+    try:
+        df = pd.read_csv("data/spotify_tracks.csv")
+    except FileNotFoundError:
+        # Fallback for local development if your structure differs
+        df = pd.read_csv("../data/spotify_tracks.csv")
+    
     df = df.drop_duplicates()
     df = df[(df["popularity"] >= 0) & (df["popularity"] <= 100)]
 
